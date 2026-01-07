@@ -1,0 +1,174 @@
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle, FancyBboxPatch
+
+def create_modern_form():
+    # A4 Dimensions
+    width, height = 8.27, 11.69
+    fig, ax = plt.subplots(figsize=(width, height), dpi=200)
+    ax.set_xlim(0, width)
+    ax.set_ylim(0, height)
+    ax.axis('off')
+
+    # Brand Colors
+    brand_red = '#E63946'  # A vibrant red similar to the logo
+    brand_dark = '#1D3557' # A deep corporate blue/black
+    brand_gray = '#F1FAEE' # Very light background for boxes
+
+    # --- 1. HEADER SECTION ---
+    # Top Banner
+    header_rect = Rectangle((0, 10.2), width, 1.49, facecolor=brand_dark, edgecolor=None, zorder=1)
+    ax.add_patch(header_rect)
+    
+    # Logo Placeholder (White Box)
+    logo_box = FancyBboxPatch((0.5, 10.5), 1.0, 0.8, boxstyle="round,pad=0.1", fc='white', ec=None, zorder=2)
+    ax.add_patch(logo_box)
+    ax.text(1.0, 10.9, "[LOGO]", ha='center', va='center', fontsize=12, color='gray')
+    
+    # Company Name in Banner
+    ax.text(1.8, 11.0, "Intelligistic Technologies LLP", fontsize=20, fontweight='bold', color='white')
+    ax.text(1.8, 10.6, "Security • Surveillance • Peace of Mind", fontsize=10, color='#A8DADC')
+
+    # Form Title
+    ax.text(width - 0.5, 11.0, "SERVICE BOOKING\nDOCKET", ha='right', va='center', fontsize=16, fontweight='bold', color='white')
+
+    # Docket Info Bar (Red)
+    docket_bar = Rectangle((0, 9.8), width, 0.4, facecolor=brand_red, edgecolor=None, zorder=1)
+    ax.add_patch(docket_bar)
+    ax.text(0.5, 10.0, "Docket No: _________________", fontsize=11, fontweight='bold', color='white', va='center')
+    ax.text(width - 0.5, 10.0, "Date: ____ / ____ / 2026", fontsize=11, fontweight='bold', color='white', ha='right', va='center')
+
+    # --- WATERMARK ---
+    ax.text(width/2, height/2, "Intelligistic", fontsize=70, color='gray', alpha=0.07, rotation=45, ha='center', va='center', fontweight='bold')
+
+    # --- 2. CLIENT DETAILS (Boxed) ---
+    y_start = 9.4
+    section_h = 2.4
+    
+    # Section Header
+    ax.text(0.5, y_start, "01. CLIENT INFORMATION", fontsize=11, fontweight='bold', color=brand_dark)
+    
+    # Background Box
+    client_box = FancyBboxPatch((0.4, y_start - section_h), width - 0.8, section_h - 0.1, 
+                                boxstyle="round,pad=0.05", fc=brand_gray, ec='#cccccc', lw=1)
+    ax.add_patch(client_box)
+    
+    # Fields
+    curr_y = y_start - 0.4
+    ax.text(0.6, curr_y, "Client Name / Company:", fontsize=9, fontweight='bold')
+    ax.text(3.5, curr_y, "________________________________________________________", fontsize=9)
+    
+    curr_y -= 0.35
+    ax.text(0.6, curr_y, "Client Type:", fontsize=9, fontweight='bold')
+    ax.text(2.0, curr_y, "☐ Individual   ☐ Corporate   ☐ Shop   ☐ Society", fontsize=9)
+    
+    curr_y -= 0.35
+    ax.text(0.6, curr_y, "Contact Person:", fontsize=9, fontweight='bold')
+    ax.text(2.5, curr_y, "_______________________", fontsize=9)
+    ax.text(5.0, curr_y, "Mobile: _______________________", fontsize=9, fontweight='bold')
+    
+    curr_y -= 0.35
+    ax.text(0.6, curr_y, "Email:", fontsize=9, fontweight='bold')
+    ax.text(1.5, curr_y, "________________________________________________________", fontsize=9)
+    
+    curr_y -= 0.35
+    ax.text(0.6, curr_y, "Site Address:", fontsize=9, fontweight='bold')
+    ax.text(2.2, curr_y, "________________________________________________________", fontsize=9)
+    
+    curr_y -= 0.35
+    ax.text(0.6, curr_y, "Local PS: ________________________   Fire Station: ________________________", fontsize=8)
+
+    # --- 3. TECHNICAL SPECS (Boxed) ---
+    y_start = 6.6
+    section_h = 2.0
+    
+    ax.text(0.5, y_start, "02. SERVICE & TECHNICAL SPECS", fontsize=11, fontweight='bold', color=brand_dark)
+    
+    tech_box = FancyBboxPatch((0.4, y_start - section_h), width - 0.8, section_h - 0.1, 
+                              boxstyle="round,pad=0.05", fc='white', ec='#cccccc', lw=1)
+    ax.add_patch(tech_box)
+    
+    curr_y = y_start - 0.4
+    ax.text(0.6, curr_y, "Service Type:", fontsize=9, fontweight='bold')
+    ax.text(2.5, curr_y, "☐ CCTV Surveillance    ☐ Installation Only    ☐ Combo", fontsize=9)
+    
+    curr_y -= 0.35
+    ax.text(0.6, curr_y, "Camera Count:", fontsize=9, fontweight='bold')
+    ax.text(2.2, curr_y, "_________     Internet at Site:  ☐ Yes   ☐ No", fontsize=9)
+    
+    curr_y -= 0.35
+    ax.text(0.6, curr_y, "Monitoring:", fontsize=9, fontweight='bold')
+    ax.text(2.2, curr_y, "☐ Live Monitoring   ☐ Alert-Based   ☐ 24x7   ☐ Night Only", fontsize=9)
+    
+    curr_y -= 0.35
+    ax.text(0.6, curr_y, "Locations:", fontsize=9, fontweight='bold')
+    ax.text(2.2, curr_y, "_________________________________________________________", fontsize=9)
+    
+    curr_y -= 0.30
+    ax.text(0.6, curr_y, "(Hall, Entry, Cash Counter, Perimeter, etc.)", fontsize=7, style='italic', color='gray')
+
+    # --- 4. COMMERCIAL (Grid Style) ---
+    y_start = 4.2
+    section_h = 1.6
+    
+    ax.text(0.5, y_start, "03. COMMERCIAL AGREEMENT", fontsize=11, fontweight='bold', color=brand_dark)
+    
+    # Draw Grid Lines manually for specific table look
+    # Main Box
+    rect_comm = Rectangle((0.4, y_start - section_h), width - 0.8, section_h - 0.1, fill=False, ec='black', lw=1)
+    ax.add_patch(rect_comm)
+    
+    # Horizontal Divider
+    ax.plot([0.4, width-0.4], [y_start - 0.7, y_start - 0.7], color='black', lw=0.5)
+    
+    # Vertical Divider
+    ax.plot([width/2, width/2], [y_start - section_h, y_start - 0.1], color='black', lw=0.5)
+
+    # Top Left Cell
+    ax.text(0.6, y_start - 0.4, "Total Quoted Amount:", fontsize=9, fontweight='bold')
+    ax.text(0.6, y_start - 0.6, "₹ __________________", fontsize=12, fontweight='bold', color=brand_red)
+    
+    # Top Right Cell
+    ax.text(4.3, y_start - 0.4, "Billing Cycle:", fontsize=9, fontweight='bold')
+    ax.text(4.3, y_start - 0.6, "☐ Monthly  ☐ Quarterly  ☐ One-Time", fontsize=9)
+    
+    # Bottom Left Cell
+    ax.text(0.6, y_start - 0.95, "Advance Paid: ₹ ______________", fontsize=9)
+    ax.text(0.6, y_start - 1.2, "Due Amount:   ₹ ______________", fontsize=9)
+    ax.text(0.6, y_start - 1.45, "GST: ☐ Yes  ☐ No", fontsize=9)
+
+    # Bottom Right Cell
+    ax.text(4.3, y_start - 0.95, "Payment Mode:", fontsize=9, fontweight='bold')
+    ax.text(4.3, y_start - 1.2, "☐ Cash  ☐ UPI  ☐ Cheque  ☐ Bank", fontsize=9)
+    ax.text(4.3, y_start - 1.45, "Start Date: ___ / ___ / 20__", fontsize=9)
+
+    # --- 5. TERMS ---
+    y_start = 2.2
+    ax.text(0.5, y_start, "IMPORTANT CONDITIONS (Existing Systems)", fontsize=9, fontweight='bold', color='red')
+    terms = (
+        "1. Integration with existing alarms/systems attracts EXTRA charges.\n"
+        "2. Client bears all costs for rewiring, fittings, or software updates.\n"
+        "3. Intelligistic is NOT responsible for failures of third-party equipment."
+    )
+    ax.text(0.5, y_start - 0.15, terms, fontsize=8, va='top', linespacing=1.6)
+
+    # --- 6. FOOTER / SIGNATURES ---
+    y_sig = 0.8
+    
+    # Client Sig
+    ax.text(0.8, y_sig, "__________________________", fontsize=10)
+    ax.text(0.8, y_sig - 0.2, "CLIENT SIGNATURE", fontsize=8, fontweight='bold')
+    ax.text(0.8, y_sig - 0.35, "I accept the terms & conditions.", fontsize=7)
+
+    # Company Sig
+    ax.text(5.0, y_sig, "__________________________", fontsize=10)
+    ax.text(5.0, y_sig - 0.2, "INTELLIGISTIC AUTH. SIGNATORY", fontsize=8, fontweight='bold')
+    
+    # Bottom Bar
+    footer_bar = Rectangle((0, 0), width, 0.3, facecolor=brand_dark, edgecolor=None)
+    ax.add_patch(footer_bar)
+    ax.text(width/2, 0.15, "www.intelligistic.live  |  Kolkata, West Bengal", ha='center', va='center', color='white', fontsize=8)
+
+    plt.tight_layout()
+    plt.savefig('Intelligistic_Booking_Design_V2.png', dpi=200, bbox_inches='tight')
+
+create_modern_form()

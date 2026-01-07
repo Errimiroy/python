@@ -131,6 +131,7 @@ def create_nda_form():
     # Footer
     ax.text(width/2, 0.2, "Intelligistic Technologies LLP  |  Confidential Legal Document", ha='center', fontsize=7, color='gray')
 
+
     plt.tight_layout()
     plt.savefig('Intelligistic_NDA_Form.png', dpi=200, bbox_inches='tight')
 

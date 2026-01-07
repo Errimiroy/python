@@ -1,0 +1,137 @@
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle, FancyBboxPatch, Polygon
+
+def create_nda_form():
+    # A4 Dimensions
+    width, height = 8.27, 11.69
+    fig, ax = plt.subplots(figsize=(width, height), dpi=200)
+    ax.set_xlim(0, width)
+    ax.set_ylim(0, height)
+    ax.axis('off')
+
+    # Colors
+    brand_red = '#FF3300'
+    brand_dark = '#1D3557'
+    text_color = '#222222'
+    line_color = '#cccccc'
+
+    # --- 1. HEADER & LOGO ---
+    # Logo Recreation (Red Square + Arrow)
+    logo_x, logo_y = 1.0, 10.6
+    logo_size = 0.8
+    logo_rect = FancyBboxPatch((logo_x, logo_y), logo_size, logo_size*0.8,
+                               boxstyle="round,pad=0.02,rounding_size=0.1",
+                               facecolor=brand_red, edgecolor=None, zorder=2)
+    ax.add_patch(logo_rect)
+    
+    # Arrow
+    arrow_poly = Polygon([(logo_x+0.25, logo_y+0.25), (logo_x+0.75, logo_y+0.65), (logo_x+0.75, logo_y+0.45)], 
+                         closed=True, color='white', zorder=3)
+    ax.add_patch(arrow_poly)
+    
+    # Company Name & Address
+    ax.text(2.0, 11.0, "Intelligistic Technologies LLP", fontsize=18, fontweight='bold', fontname='DejaVu Sans', color=brand_dark)
+    ax.text(2.0, 10.7, "103/A, Jessore Road, Kolkata – 700129, West Bengal", fontsize=9, color='#555')
+    
+    # Title
+    ax.text(width/2, 10.0, "NON-DISCLOSURE AGREEMENT (NDA)", ha='center', fontsize=14, fontweight='bold', color='black')
+    ax.plot([0.5, width-0.5], [9.8, 9.8], color='black', lw=1.5)
+
+    # --- WATERMARK ---
+    ax.text(width/2, height/2, "CONFIDENTIAL", fontsize=60, color='gray', alpha=0.07, rotation=45, ha='center', va='center', fontweight='bold')
+
+    # --- 2. PREAMBLE (Parties) ---
+    y_pos = 9.4
+    
+    intro_text = "This Agreement is made on ___ / ___ / 20__, BETWEEN:"
+    ax.text(0.6, y_pos, intro_text, fontsize=10, fontweight='bold')
+    
+    y_pos -= 0.3
+    # Party 1
+    ax.text(0.6, y_pos, "1. Intelligistic Technologies LLP", fontsize=10, fontweight='bold', color=brand_dark)
+    ax.text(0.6, y_pos - 0.15, "(Hereinafter referred to as the 'Disclosing Party')", fontsize=8, style='italic')
+    
+    # Party 2
+    ax.text(4.5, y_pos, "AND", fontsize=10, fontweight='bold')
+    
+    y_pos -= 0.4
+    ax.text(0.6, y_pos, "2. Receiving Party Name:", fontsize=9, fontweight='bold')
+    ax.text(2.8, y_pos, "_________________________________________________________", fontsize=10)
+    
+    y_pos -= 0.3
+    ax.text(0.8, y_pos, "Address:", fontsize=9)
+    ax.text(2.8, y_pos, "_________________________________________________________", fontsize=10)
+    
+    y_pos -= 0.3
+    ax.text(0.8, y_pos, "ID / PAN / GST:", fontsize=9)
+    ax.text(2.8, y_pos, "_________________________________________________________", fontsize=10)
+    
+    ax.text(0.6, y_pos - 0.2, "(Hereinafter referred to as the 'Receiving Party')", fontsize=8, style='italic')
+    
+    # Separator
+    y_pos -= 0.35
+    ax.plot([0.5, width-0.5], [y_pos, y_pos], color=line_color, lw=1)
+
+    # --- 3. CLAUSES ---
+    # We will use a smaller font and tight spacing to fit all text professionally
+    y_pos -= 0.3
+    font_s = 8
+    line_h = 0.22
+    
+    clauses = [
+        ("1. PURPOSE", "The purpose of this Agreement is to protect confidential information disclosed in connection with CCTV surveillance services, installation, technical access, system configuration, or commercial engagement."),
+        ("2. CONFIDENTIAL INFORMATION", "Includes CCTV footage (live/recorded), client details, site layouts, IP addresses, login credentials, alarm configs, pricing, and business strategies disclosed by the Disclosing Party."),
+        ("3. OBLIGATIONS", "The Receiving Party agrees to keep all information strictly confidential. It shall not be disclosed, copied, recorded, or shared with third parties without prior written consent."),
+        ("4. EXCLUSIONS", "Does not apply to information that is publicly available, required by law/court order, or lawfully known to the Receiving Party prior to disclosure."),
+        ("5. LEGAL DISCLOSURE", "If disclosure is required by law, the Receiving Party must promptly notify the Disclosing Party before making such disclosure."),
+        ("6. SENSITIVE SURVEILLANCE DATA", "The Receiving Party specifically acknowledges that CCTV footage is highly sensitive. Footage shall NOT be copied, stored, downloaded, transferred, or recorded in any form. Unauthorized handling constitutes a material breach."),
+        ("7. OWNERSHIP", "All Confidential Information remains the exclusive property of Intelligistic Technologies LLP. No license or ownership rights are granted to the Receiving Party."),
+        ("8. TERM", "This Agreement is valid for ____ years. Confidentiality obligations survive the termination of this Agreement."),
+        ("9. REMEDIES", "Breach of this Agreement entitles the Disclosing Party to immediate termination of services, injunctive relief, and damages."),
+        ("10. JURISDICTION", "Governed by the laws of India. Subject to the exclusive jurisdiction of the courts at Kolkata, West Bengal.")
+    ]
+    
+    for title, text in clauses:
+        # Title
+        ax.text(0.6, y_pos, title, fontsize=font_s, fontweight='bold', color=brand_dark)
+        
+        # Text wrapping manually for layout control
+        words = text.split()
+        line = ""
+        for word in words:
+            if len(line + word) > 115: # Line width limit
+                ax.text(0.6, y_pos - 0.12, line, fontsize=font_s, color=text_color)
+                y_pos -= 0.12
+                line = ""
+            line += word + " "
+        ax.text(0.6, y_pos - 0.12, line, fontsize=font_s, color=text_color)
+        y_pos -= (0.25) # Gap between clauses
+
+    # --- 4. SIGNATURES ---
+    y_sig_start = 1.8
+    
+    # Box for signatures
+    sig_box = FancyBboxPatch((0.5, 0.5), width-1.0, 1.5, boxstyle="round,pad=0.05", fc='#f9f9f9', ec=line_color)
+    ax.add_patch(sig_box)
+    
+    # Left: Company
+    ax.text(0.7, y_sig_start, "For Intelligistic Technologies LLP", fontsize=9, fontweight='bold')
+    ax.text(0.7, y_sig_start - 0.5, "___________________________", fontsize=10)
+    ax.text(0.7, y_sig_start - 0.7, "Authorized Signatory", fontsize=8)
+    ax.text(0.7, y_sig_start - 1.0, "Date: _________________", fontsize=8)
+    
+    # Right: Client
+    ax.text(4.5, y_sig_start, "Receiving Party (Client)", fontsize=9, fontweight='bold')
+    
+    ax.text(4.5, y_sig_start - 0.3, "Name: __________________________", fontsize=8)
+    ax.text(4.5, y_sig_start - 0.55, "Signature: _______________________", fontsize=8)
+    ax.text(4.5, y_sig_start - 0.8, "Designation: ____________________", fontsize=8)
+    ax.text(4.5, y_sig_start - 1.05, "Date: ___________________________", fontsize=8)
+
+    # Footer
+    ax.text(width/2, 0.2, "Intelligistic Technologies LLP  |  Confidential Legal Document", ha='center', fontsize=7, color='gray')
+
+    plt.tight_layout()
+    plt.savefig('Intelligistic_NDA_Form.png', dpi=200, bbox_inches='tight')
+
+create_nda_form()
